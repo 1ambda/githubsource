@@ -1,4 +1,8 @@
-hash: 00ad7dc3fceafe36c1301c537c61e240eec2e1cf976962bc961cfa7fd901c8ad
-updated: 2016-11-07T20:58:59.559883026+09:00
-imports: []
+hash: afd6240b1ef7f4c8e8e4f051a743369afcbd3e819db2b0b01b4b77670df477a1
+updated: 2016-11-08T01:30:16.554175731+09:00
+imports:
+- name: github.com/pkg/errors
+  version: 645ef00459ed84a119197bfb8d8205042c6df63d
+- name: github.com/Sirupsen/logrus
+  version: d26492970760ca5d33129d2d799e34be5c4782eb
 testImports: []
