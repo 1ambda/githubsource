@@ -1,6 +1,7 @@
 package main
 
 import (
+	"compress/gzip"
 	"fmt"
 	"io"
 	"net/http"
@@ -19,11 +20,9 @@ func main() {
 	for start.Before(end) {
 		start = start.Add(time.Hour)
 
-		url := fmt.Sprintf("http://data.githubarchive.org/%d-%02d-%02d-%02d.json.gz",
+		filename := fmt.Sprintf("%d-%02d-%02d-%02d.json",
 			start.Year(), start.Month(), start.Day(), start.Hour())
-
-		filename := fmt.Sprintf("%d-%02d-%02d-%02d.json.gz",
-			start.Year(), start.Month(), start.Day(), start.Hour())
+		url := fmt.Sprintf("http://data.githubarchive.org/%s.gz", filename)
 
 		err = getGzipJsonAndWriteToFile(url, filename)
 
@@ -38,24 +37,40 @@ func main() {
 
 func getGzipJsonAndWriteToFile(url string, filename string) error {
 
+	// 1. Get json
 	res, err := http.Get(url)
 	if err != nil {
 		return err
 	}
-	defer res.Body.Close()
 
 	if res.StatusCode == 404 {
 		err = errors.Errorf("Failed to get %s (404)", url)
 		return err
 	}
 
+	// 2. Unpack gzip concurrently
+	pipeRedaer, pipeWriter := io.Pipe()
+
+	go func() {
+		gzipReader, _ := gzip.NewReader(res.Body)
+
+		defer func() {
+			res.Body.Close()
+			gzipReader.Close()
+			pipeWriter.Close()
+		}()
+
+		io.Copy(pipeWriter, gzipReader)
+	}()
+
+	// 3. Write to file
 	out, err := os.Create(filename)
 	if err != nil {
 		return err
 	}
 	defer out.Close()
 
-	_, err = io.Copy(out, res.Body)
+	_, err = io.Copy(out, pipeRedaer)
 
 	return err
 }
@@ -75,7 +90,7 @@ func getEndDate() (time.Time, error) {
 
 func getStartDate() (time.Time, error) {
 	// start, _ := time.Parse(time.RFC3339, "2015-01-01T00:00:00+00:00")
-	start, err := time.Parse(time.RFC3339, "2016-11-06T23:00:00+00:00")
+	start, err := time.Parse(time.RFC3339, "2016-11-07T10:00:00+00:00")
 
 	return start, err
 }
