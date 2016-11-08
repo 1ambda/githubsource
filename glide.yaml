@@ -6,3 +6,4 @@ import:
   version: v0.11.0
 - package: github.com/urfave/cli
   version: v1.18.1
+- package: github.com/jinzhu/now

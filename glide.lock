@@ -1,6 +1,8 @@
-hash: 029163f29f773145461f3338679aec891c8666492ba08af2bd69a0bd0ceaf62c
-updated: 2016-11-08T19:50:43.081393755+09:00
+hash: 6fd8abd2db23ab42a6905107a17d1f9627465242018bdc3742bb3359999bb8cd
+updated: 2016-11-08T23:06:53.730481422+09:00
 imports:
+- name: github.com/jinzhu/now
+  version: d9861969c7a7e84746d341c09020c2ef8a617f8f
 - name: github.com/pkg/errors
   version: 645ef00459ed84a119197bfb8d8205042c6df63d
 - name: github.com/Sirupsen/logrus

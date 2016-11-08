@@ -13,10 +13,8 @@ import (
 )
 
 // Download github archive files
-func Download() {
-	start, _ := getStartDate()
-	end, _ := getEndDate()
-	var err error = nil
+func Download(start time, end time) {
+	var err error
 
 	for start.Before(end) {
 		start = start.Add(time.Hour)
@@ -73,24 +71,4 @@ func getGzipJsonAndWriteToFile(url string, filename string) error {
 	_, err = io.Copy(out, pipeRedaer)
 
 	return err
-}
-
-func getEndDate() (time.Time, error) {
-	yesterday := time.Now().AddDate(0, 0, -1)
-	yesterdayFormat :=
-		fmt.Sprintf("%d-%02d-%02dT23:00:00+00:00",
-			yesterday.Year(),
-			yesterday.Month(),
-			yesterday.Day())
-
-	end, err := time.Parse(time.RFC3339, yesterdayFormat)
-
-	return end, err
-}
-
-func getStartDate() (time.Time, error) {
-	// start, _ := time.Parse(time.RFC3339, "2015-01-01T00:00:00+00:00")
-	start, err := time.Parse(time.RFC3339, "2016-11-07T10:00:00+00:00")
-
-	return start, err
 }

@@ -7,4 +7,5 @@
 - [ ] CLI command, color
 - [ ] parallel?
 - [ ] packging and distribute as bin
-- [ ] Makefile?
+- [ ] makefile?
+- [ ] travis
