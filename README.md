@@ -2,6 +2,9 @@
 
 - [x] pkg/error
 - [x] logger
-- [ ] decompress gzip
-- [ ] parallel?
+- [x] decompress gzip
+- [x] small test
 - [ ] CLI command, color
+- [ ] parallel?
+- [ ] packging and distribute as bin
+- [ ] Makefile?
