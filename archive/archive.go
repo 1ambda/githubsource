@@ -1,4 +1,4 @@
-package main
+package archive
 
 import (
 	"compress/gzip"
@@ -12,7 +12,8 @@ import (
 	"github.com/pkg/errors"
 )
 
-func main() {
+// Download github archive files
+func Download() {
 	start, _ := getStartDate()
 	end, _ := getEndDate()
 	var err error = nil
@@ -32,7 +33,6 @@ func main() {
 			log.Error(fmt.Sprintf("%+v\n", err))
 		}
 	}
-
 }
 
 func getGzipJsonAndWriteToFile(url string, filename string) error {
