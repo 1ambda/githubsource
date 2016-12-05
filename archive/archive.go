@@ -8,12 +8,12 @@ import (
 	"os"
 	"time"
 
-	log "github.com/Sirupsen/logrus"
+        log "github.com/inconshreveable/log15"
 	"github.com/pkg/errors"
 )
 
 // Download github archive files
-func Download(start time, end time) {
+func Download(dryrun bool, start time.Time, end time.Time) {
 	var err error
 
 	for start.Before(end) {
@@ -23,18 +23,20 @@ func Download(start time, end time) {
 			start.Year(), start.Month(), start.Day(), start.Hour())
 		url := fmt.Sprintf("http://data.githubarchive.org/%s.gz", filename)
 
-		err = getGzipJsonAndWriteToFile(url, filename)
-
-		if err == nil {
-			log.Info("Saved - ", filename)
-		} else {
-			log.Error(fmt.Sprintf("%+v\n", err))
+                err = nil
+                if !dryrun {
+                        err = getGzipJsonAndWriteToFile(url, filename)
+                }
+                context := log.Ctx{"filename": filename}
+		if err != nil {
+                        log.Error(err.Error(), context)
+                        continue
 		}
+                log.Info("Downloaded", context)
 	}
 }
 
 func getGzipJsonAndWriteToFile(url string, filename string) error {
-
 	// 1. Get json
 	res, err := http.Get(url)
 	if err != nil {

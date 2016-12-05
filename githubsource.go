@@ -3,9 +3,11 @@ package main
 import (
 	"github.com/urfave/cli"
 	"os"
-	// "github.com/1ambda/githubsource/archive"
-	"github.com/1ambda/githubsource/datetime"
+
 	log "github.com/inconshreveable/log15"
+
+	"github.com/1ambda/githubsource/archive"
+	"github.com/1ambda/githubsource/datetime"
 )
 
 func main() {
@@ -36,30 +38,30 @@ func main() {
 	app.Action = func(c *cli.Context) error {
 		appLog := log.New()
 		output := getValidOutput(c.String("output"))
-                dryrun := c.Bool("dryrun")
+		dryrun := c.Bool("dryrun")
 		start := c.String("start")
 		end := c.String("end")
 
 		startTime := datetime.GetStartTime(start)
-                endTime := datetime.GetEndTime(end)
+		endTime := datetime.GetEndTime(end)
 
 		if startTime.After(endTime) {
 			appLog.Error("Invalid time period", log.Ctx{
-				"end": endTime,
+				"end":   endTime,
 				"start": startTime,
 			})
-                        return nil
+			return nil
 		}
 
-		if dryrun {
-                        appLog.Info("Execute dryrun", log.Ctx{
-				"output": output,
-				"end": endTime,
-				"start": startTime,
-			})
-		}
+		appLog.Info("Execute dryrun", log.Ctx{
+			"end":    endTime,
+			"start":  startTime,
+			"output": output,
+			"dryrun": dryrun,
+		})
 
-		// archive.Download(datetime.GetStartDate(), datetime.GetEnddate())
+		archive.Download(dryrun, startTime, endTime)
+
 		return nil
 	}
 

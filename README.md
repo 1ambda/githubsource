@@ -4,7 +4,7 @@
 - [x] logger
 - [x] decompress gzip
 - [x] small test
-- [ ] CLI command, color
+- [x] CLI command, color
 - [ ] parallel?
 - [ ] packging and distribute as bin
 - [ ] makefile?
