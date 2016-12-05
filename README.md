@@ -1,4 +1,4 @@
-# github-archive-downloader
+# githubsource
 
 - [x] pkg/error
 - [x] logger

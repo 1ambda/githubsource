@@ -1,5 +1,8 @@
 # Created by https://www.gitignore.io/api/emacs,go,vim,intellij,osx
 
+.idea/
+*.iml
+
 ### Emacs ###
 # -*- mode: gitignore; -*-
 *~

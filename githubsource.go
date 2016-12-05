@@ -10,14 +10,14 @@ import (
 
 func main() {
 	app := cli.NewApp()
-	app.Name = "github_archive_downloader"
+	app.Name = "githubsource"
 	app.Version = "0.0.1"
 	app.Usage = "-output json --start 2016-11-01T00"
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
 			Name:  "output, o",
 			Value: "gz",
-			Usage: "file `type`: [gzip | json]",
+			Usage: "file `type`: [gz | json]",
 		},
 		cli.StringFlag{
 			Name:  "start, s",
