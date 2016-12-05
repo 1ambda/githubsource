@@ -53,14 +53,14 @@ func main() {
 			return nil
 		}
 
-		appLog.Info("Execute dryrun", log.Ctx{
+		appLog.Info("Configuration", log.Ctx{
 			"end":    endTime,
 			"start":  startTime,
 			"output": output,
 			"dryrun": dryrun,
 		})
 
-		archive.Download(dryrun, startTime, endTime)
+		archive.Download(dryrun, output, startTime, endTime)
 
 		return nil
 	}
