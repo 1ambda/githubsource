@@ -14,7 +14,7 @@ func main() {
 	app := cli.NewApp()
 	app.Name = "githubsource"
 	app.Version = "0.0.1"
-	app.Usage = "-output json --start 2016-11-01T00"
+	app.Usage = "-output json --start 2016-11-01T00 --end 2016-11-07T23"
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
 			Name:  "output, o",
@@ -36,7 +36,6 @@ func main() {
 	}
 
 	app.Action = func(c *cli.Context) error {
-		appLog := log.New()
 		output := getValidOutput(c.String("output"))
 		dryrun := c.Bool("dryrun")
 		start := c.String("start")
@@ -46,14 +45,14 @@ func main() {
 		endTime := datetime.GetEndTime(end)
 
 		if startTime.After(endTime) {
-			appLog.Error("Invalid time period", log.Ctx{
+			log.Error("Invalid time period", log.Ctx{
 				"end":   endTime,
 				"start": startTime,
 			})
 			return nil
 		}
 
-		appLog.Info("Configuration", log.Ctx{
+		log.Info("Configuration", log.Ctx{
 			"end":    endTime,
 			"start":  startTime,
 			"output": output,
