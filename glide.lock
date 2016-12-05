@@ -1,8 +1,14 @@
-hash: 6fd8abd2db23ab42a6905107a17d1f9627465242018bdc3742bb3359999bb8cd
-updated: 2016-11-08T23:06:53.730481422+09:00
+hash: 39abc71f7e447ef17b2458e0db3f49500d2e46ffdfb94ea759c2f5fb77bf589f
+updated: 2016-12-05T21:12:41.42524363+09:00
 imports:
+- name: github.com/inconshreveable/log15
+  version: b105bd37f74e5d9dc7b6ad7806715c7a2b83fd3f
 - name: github.com/jinzhu/now
   version: d9861969c7a7e84746d341c09020c2ef8a617f8f
+- name: github.com/mattn/go-colorable
+  version: d228849504861217f796da67fae4f6e347643f15
+- name: github.com/mattn/go-isatty
+  version: 30a891c33c7cde7b02a981314b4228ec99380cca
 - name: github.com/pkg/errors
   version: 645ef00459ed84a119197bfb8d8205042c6df63d
 - name: github.com/Sirupsen/logrus
@@ -13,6 +19,11 @@ imports:
   version: c200b10b5d5e122be351b67af224adc6128af5bf
   subpackages:
   - unix
+- name: gopkg.in/inconshreveable/log15.v2
+  version: b105bd37f74e5d9dc7b6ad7806715c7a2b83fd3f
+  subpackages:
+  - stack
+  - term
 testImports:
 - name: github.com/onsi/ginkgo
   version: c07a44f02cf4a895e331f4f473c0943ee116c668

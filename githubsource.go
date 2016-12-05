@@ -1,11 +1,11 @@
 package main
 
 import (
-	"fmt"
 	"github.com/urfave/cli"
 	"os"
-	// "github.com/1ambda/github-archive-downloader/archive"
-	// "github.com/1ambda/github-archive-downloader/datetime"
+	// "github.com/1ambda/githubsource/archive"
+	"github.com/1ambda/githubsource/datetime"
+	log "github.com/inconshreveable/log15"
 )
 
 func main() {
@@ -27,13 +27,37 @@ func main() {
 			Name:  "end, e",
 			Usage: "end `date` (e.g. '2016-11-01T23')",
 		},
+		cli.BoolFlag{
+			Name:  "dryrun, d",
+			Usage: "enable dryrun or not",
+		},
 	}
 
 	app.Action = func(c *cli.Context) error {
-
+		appLog := log.New()
 		output := getValidOutput(c.String("output"))
+                dryrun := c.Bool("dryrun")
+		start := c.String("start")
+		end := c.String("end")
 
-		fmt.Println(output)
+		startTime := datetime.GetStartTime(start)
+                endTime := datetime.GetEndTime(end)
+
+		if startTime.After(endTime) {
+			appLog.Error("Invalid time period", log.Ctx{
+				"end": endTime,
+				"start": startTime,
+			})
+                        return nil
+		}
+
+		if dryrun {
+                        appLog.Info("Execute dryrun", log.Ctx{
+				"output": output,
+				"end": endTime,
+				"start": startTime,
+			})
+		}
 
 		// archive.Download(datetime.GetStartDate(), datetime.GetEnddate())
 		return nil

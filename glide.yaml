@@ -7,3 +7,5 @@ import:
 - package: github.com/urfave/cli
   version: v1.18.1
 - package: github.com/jinzhu/now
+- package: gopkg.in/inconshreveable/log15.v2
+  version: v2.11
