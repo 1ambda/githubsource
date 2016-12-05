@@ -1,9 +1,10 @@
 package main
 
 import (
-	"github.com/urfave/cli"
 	"os"
+	"time"
 
+	"github.com/urfave/cli"
 	log "github.com/inconshreveable/log15"
 
 	"github.com/1ambda/githubsource/archive"
@@ -14,7 +15,7 @@ func main() {
 	app := cli.NewApp()
 	app.Name = "githubsource"
 	app.Version = "0.0.1"
-	app.Usage = "-output json --start 2016-11-01T00 --end 2016-11-07T23"
+	app.Usage = "--concurrent -output json --start 2016-11-01T09 --end 2016-11-07T23"
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
 			Name:  "output, o",
@@ -24,6 +25,10 @@ func main() {
 		cli.StringFlag{
 			Name:  "start, s",
 			Usage: "start `date` (e.g. '2016-11-01T00')",
+		},
+		cli.BoolFlag{
+			Name:  "concurrent, c",
+			Usage: "whether to use goroutines or not",
 		},
 		cli.StringFlag{
 			Name:  "end, e",
@@ -38,6 +43,7 @@ func main() {
 	app.Action = func(c *cli.Context) error {
 		output := getValidOutput(c.String("output"))
 		dryrun := c.Bool("dryrun")
+                concurrent := c.Bool("concurrent")
 		start := c.String("start")
 		end := c.String("end")
 
@@ -56,10 +62,15 @@ func main() {
 			"end":    endTime,
 			"start":  startTime,
 			"output": output,
+			"concurrent": concurrent,
 			"dryrun": dryrun,
 		})
 
-		archive.Download(dryrun, output, startTime, endTime)
+		now := time.Now()
+
+		archive.Download(concurrent, dryrun, output, startTime, endTime)
+
+		log.Info("Elasped " + time.Since(now).String())
 
 		return nil
 	}

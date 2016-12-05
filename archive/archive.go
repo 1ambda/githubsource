@@ -6,28 +6,66 @@ import (
         "io"
         "net/http"
         "os"
+        "sync"
         "time"
 
         log "github.com/inconshreveable/log15"
         "github.com/pkg/errors"
 )
 
+func Download(concurrent, dryrun bool, output string, start, end time.Time) {
+        if concurrent {
+                concurrentDownload(dryrun, output, start, end)
+        } else {
+                sequentialDownload(dryrun, output, start, end)
+        }
+}
+
+// Download github archive files concurrently
+func concurrentDownload(dryrun bool, output string, start, end time.Time) {
+        var err error
+        var wg sync.WaitGroup
+
+        for start.Before(end) {
+                start = start.Add(time.Hour)
+                prefix := fmt.Sprintf("%d-%02d-%02d-%02d",
+                        start.Year(), start.Month(), start.Day(), start.Hour())
+                url := fmt.Sprintf("http://data.githubarchive.org/%s.json.gz", prefix)
+                context := log.Ctx{"prefix": prefix, "output": output}
+
+                wg.Add(1)
+                go func () {
+                        defer func() { wg.Done() } ()
+                        err = nil
+                        if !dryrun {
+                                err = getGithubSource(output, url, prefix)
+                        }
+                        if err != nil {
+                                log.Error(err.Error(), context)
+                                return
+                        }
+                        log.Info(fmt.Sprintf("Downloaded %s.%s", prefix, output), context)
+                }()
+        }
+
+        wg.Wait()
+}
+
 // Download github archive files
-func Download(dryrun bool, output string, start, end time.Time) {
+func sequentialDownload(dryrun bool, output string, start, end time.Time) {
         var err error
 
         for start.Before(end) {
                 start = start.Add(time.Hour)
-
                 prefix := fmt.Sprintf("%d-%02d-%02d-%02d",
                         start.Year(), start.Month(), start.Day(), start.Hour())
                 url := fmt.Sprintf("http://data.githubarchive.org/%s.json.gz", prefix)
+                context := log.Ctx{"prefix": prefix, "output": output}
 
                 err = nil
                 if !dryrun {
                         err = getGithubSource(output, url, prefix)
                 }
-                context := log.Ctx{"prefix": prefix, "output": output}
                 if err != nil {
                         log.Error(err.Error(), context)
                         continue
