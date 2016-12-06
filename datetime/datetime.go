@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-// GetEndTime parse input string and return time.Time
+// GetStartTime parse input string and return time.Time
 func GetStartTime(start string) time.Time {
 	yesterday := time.Now().AddDate(0, 0, -1)
 
@@ -15,7 +15,7 @@ func GetStartTime(start string) time.Time {
 		start = yesterdayTimeStr
 	}
 
-	parsed, err := ParseRawTime(start)
+	parsed, err := parseRawTime(start)
 
 	if err != nil {
 		log.Warnf("Failed to parse time: %s\n%v+", start, err)
@@ -34,7 +34,7 @@ func GetEndTime(end string) time.Time {
 		end = currentTimeStr
 	}
 
-	parsed, err := ParseRawTime(end)
+	parsed, err := parseRawTime(end)
 
 	if err != nil {
 		log.Warnf("Failed to parse time: %s\n%v+", end, err)
@@ -50,8 +50,8 @@ func getCurrentTimeStr(now time.Time) string {
 		now.Year(), now.Month(), now.Day(), now.Hour())
 }
 
-// ParseRawTime parsing string formatted like `2016-11-11T10`
-func ParseRawTime(raw string) (time.Time, error) {
+// parseRawTime parsing string formatted like `2016-11-11T10`
+func parseRawTime(raw string) (time.Time, error) {
 	formatted := fmt.Sprintf("%s:00:00+00:00", raw)
 	time, err := time.Parse(time.RFC3339, formatted)
 

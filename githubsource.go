@@ -86,7 +86,7 @@ func createAction() func(*cli.Context) error {
 
 		archive.Download(concurrent, dryrun, output, startTime, endTime)
 
-		log.Info("Elasped " + time.Since(now).String())
+		log.Info("Elapsed " + time.Since(now).String())
 
 		return nil
 	}

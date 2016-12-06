@@ -13,6 +13,7 @@ import (
 	"github.com/pkg/errors"
 )
 
+// Download github archive files
 func Download(concurrent, dryrun bool, output string, start, end time.Time) {
 	if concurrent {
 		concurrentDownload(dryrun, output, start, end)
