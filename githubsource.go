@@ -4,8 +4,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/urfave/cli"
 	log "github.com/inconshreveable/log15"
+	"github.com/urfave/cli"
 
 	"github.com/1ambda/githubsource/archive"
 	"github.com/1ambda/githubsource/datetime"
@@ -16,7 +16,21 @@ func main() {
 	app.Name = "githubsource"
 	app.Version = "0.0.1"
 	app.Usage = "--concurrent -output json --start 2016-11-01T09 --end 2016-11-07T23"
-	app.Flags = []cli.Flag{
+	app.Flags = createFlag()
+	app.Action = createAction()
+	app.Run(os.Args)
+}
+
+func getValidOutput(output string) string {
+	if output != "json" {
+		return "gz"
+	}
+
+	return output
+}
+
+func createFlag() []cli.Flag {
+	return []cli.Flag{
 		cli.StringFlag{
 			Name:  "output, o",
 			Value: "gz",
@@ -39,11 +53,13 @@ func main() {
 			Usage: "enable dryrun or not",
 		},
 	}
+}
 
-	app.Action = func(c *cli.Context) error {
+func createAction() func(*cli.Context) error {
+	return func(c *cli.Context) error {
 		output := getValidOutput(c.String("output"))
 		dryrun := c.Bool("dryrun")
-                concurrent := c.Bool("concurrent")
+		concurrent := c.Bool("concurrent")
 		start := c.String("start")
 		end := c.String("end")
 
@@ -59,11 +75,11 @@ func main() {
 		}
 
 		log.Info("Configuration", log.Ctx{
-			"end":    endTime,
-			"start":  startTime,
-			"output": output,
+			"end":        endTime,
+			"start":      startTime,
+			"output":     output,
 			"concurrent": concurrent,
-			"dryrun": dryrun,
+			"dryrun":     dryrun,
 		})
 
 		now := time.Now()
@@ -74,14 +90,4 @@ func main() {
 
 		return nil
 	}
-
-	app.Run(os.Args)
-}
-
-func getValidOutput(output string) string {
-	if output != "json" && output != "gz" {
-		return "json"
-	}
-
-	return output
 }
