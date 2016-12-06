@@ -1,3 +1,5 @@
+[![Go Report Card](https://goreportcard.com/badge/github.com/1ambda/githubsource)](https://goreportcard.com/report/github.com/1ambda/githubsource) [![Travis Build](https://travis-ci.org/1ambda/githubsource.svg?branch=master)](https://travis-ci.org/1ambda/githubsource.svg?branch=master)
+
 # githubsource
 
 Download [github archive files](https://www.githubarchive.org/) using CLI.
@@ -34,17 +36,3 @@ GLOBAL OPTIONS:
    --help, -h              show help
    --version, -v           print the version
 ```
-
-## TODO
-
-- [x] pkg/error
-- [x] logger
-- [x] decompress gzip
-- [x] small test
-- [x] CLI command, color
-- [x] parallel, sequential options
-- [x] docs 
-- [x] makefile
-- [ ] travis
-- [ ] badges 
-- [ ] packging and distribute as bin
