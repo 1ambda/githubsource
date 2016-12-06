@@ -43,7 +43,8 @@ GLOBAL OPTIONS:
 - [x] small test
 - [x] CLI command, color
 - [x] parallel, sequential options
-- [ ] docs 
+- [x] docs 
+- [x] makefile
 - [ ] travis
 - [ ] badges 
 - [ ] packging and distribute as bin
