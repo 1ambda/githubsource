@@ -12,6 +12,12 @@ $ go get github.com/1ambda/githubsource
 
 ## Usage
 
+```
+# concurrently download archive files from 2016-11-01T09 until 2016-11-07T23 while extracting gz to json
+
+$ githubsource --concurrent -output json --start 2016-11-01T09 --end 2016-11-07T23"
+```
+
 ```sh
 $ githubsource - h
 
